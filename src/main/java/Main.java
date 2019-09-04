@@ -5,10 +5,12 @@ import org.flywaydb.core.Flyway;
 import org.sql2o.Sql2o;
 import org.sql2o.converters.UUIDConverter;
 import org.sql2o.quirks.PostgresQuirks;
+import spark.ModelAndView;
 
+import java.util.HashMap;
 import java.util.UUID;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
 
 public class Main {
 
@@ -32,17 +34,14 @@ public class Main {
 
 
         get("/posts", (req, res) -> {
-            System.out.println("***********************");
-            System.out.println(model.getAllPosts().size());
             if(model.getAllPosts().size() == 0) {
                 UUID id = model.createPost("hello", "world");
-                System.out.println("************ ID ******* " + id);
             }
 
-            res.status(200);
-            res.type("application/json");
+            HashMap posts = new HashMap();
+            posts.put("posts", model.getAllPosts());
 
-            return model.getAllPosts();
-        });
+            return new ModelAndView(posts, "templates/posts.vtl");
+        }, new VelocityTemplateEngine());
     }
 }
