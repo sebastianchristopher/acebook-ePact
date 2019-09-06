@@ -4,6 +4,8 @@
 
  - Make sure postgres is running
  - `createdb acebook`
+ - `brew install maven`
+ - `mvn install`
  - Open project in intellij 
  - Click the run button
  - Hit http://localhost:4567/posts
